@@ -321,7 +321,7 @@ def train_loop(core: RobotCore, renderer: Optional[RobotRenderer],
                analyzer: FisherMapAnalyzer, agent: PPO,
                headless: bool, realtime: bool, seed: int, model_path: str):
 
-    set_seed(seed)
+    # set_seed(seed)
     print("== TRAIN ==")
     returns: List[float] = []
     best_mean10 = -1e9
@@ -414,7 +414,7 @@ def test_loop(core: RobotCore, renderer: Optional[RobotRenderer],
               analyzer: FisherMapAnalyzer, agent: PPO,
               headless: bool, realtime: bool, seed: int):
 
-    set_seed(seed)
+    # set_seed(seed)
     print("== TEST ==")
 
     for ep in range(1, EPISODES + 1):
@@ -493,6 +493,12 @@ def build_parser():
 
 def main():
     args = build_parser().parse_args()
+    if args.seed < 0:
+            seed = int(time.time()) % (2**32 - 1)
+    else:
+        seed = args.seed
+    set_seed(seed)
+    print(f"[Seed] Using seed {seed}")
     print(f"Mode={'TRAIN' if args.train else 'TEST'}  headless={args.headless} realtime={args.realtime}")
 
     # 环境/渲染器/分析器
@@ -501,7 +507,7 @@ def main():
     analyzer = FisherMapAnalyzer(threshold_ratio=0.2, min_points=15, fov_angle=FOV_ANGLE)
 
     agent = PPO()
-
+    
     # 训练 or 测试
     if args.train:
         os.makedirs(os.path.dirname(args.model) or ".", exist_ok=True)

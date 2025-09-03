@@ -254,6 +254,7 @@ def test_loop(core: RobotCore, renderer: Optional[RobotRenderer],
                 dist = Categorical(logits=agent.actor(x))
                 a_idx = torch.argmax(dist.probs, dim=1).item()
                 gaze = (a_idx * agent.angle_step) % 360.0
+                print(f"gaze={gaze:.3f}")
 
             core.set_gaze(gaze); core.step(); core.update_maps()
             primary_next, _ = analyzer.analyze(core.feature_map)

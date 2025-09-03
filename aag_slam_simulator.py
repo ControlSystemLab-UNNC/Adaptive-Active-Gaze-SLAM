@@ -103,7 +103,8 @@ class RobotCore:
 
         self.robot_pos = self._find_safe_start()
         self.robot_angle = float(random.randint(0, 360))
-        self.gaze_angle = 0.0
+        # self.gaze_angle = 0.
+        self.gaze_angle = float(random.randint(0, 360))
         self._target_gaze_angle = 0.0
         self._active_gaze_control = False
 
